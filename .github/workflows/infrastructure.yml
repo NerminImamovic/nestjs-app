@@ -38,10 +38,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan -no-color
 
-      - name: Print Terraform Plan
-        run: terraform show -no-color tfplan
-
-  ManualApprove:
+  ApplyTerraform:
     needs: TerraformShow
     defaults:
         run:
@@ -49,19 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: approvers
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Manual Approval
-        run: echo "Manually approved"
-
-  TerraformApply:
-    needs: ManualApprove
-    runs-on: ubuntu-latest
-    defaults:
-        run:
-          working-directory: ./terraform
     steps:
       - name: Checkout
         uses: actions/checkout@v3
