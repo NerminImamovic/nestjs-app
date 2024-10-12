@@ -1,9 +1,11 @@
+# .github/workflows/terraform.yml
+
 name: Terraform Plan and Apply with Approval
 
 on:
   push:
-    paths:
-      - 'terraform/**'  # Trigger only if changes are in the terraform folder
+    # paths:
+    #   - 'terraform/**'  # Trigger only if changes are in the terraform folder
 
 permissions:
   id-token: write
@@ -12,6 +14,9 @@ permissions:
 jobs:
   terraform:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./terraform  # Set the default working directory for all run steps
     steps:
       - name: Checkout
         uses: actions/checkout@v3
