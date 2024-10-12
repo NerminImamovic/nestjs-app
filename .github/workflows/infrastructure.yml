@@ -38,6 +38,9 @@ jobs:
 
   TerraformShow:
     runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./terraform
     needs: TerraformInit
     steps:
       - name: Terraform Plan
@@ -48,6 +51,9 @@ jobs:
 
   ManualApprove:
     needs: TerraformShow
+    defaults:
+        run:
+          working-directory: ./terraform
     runs-on: ubuntu-latest
     environment:
       name: approvers
@@ -58,6 +64,9 @@ jobs:
   TerraformApply:
     needs: ManualApprove
     runs-on: ubuntu-latest
+    defaults:
+        run:
+          working-directory: ./terraform
     steps:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
