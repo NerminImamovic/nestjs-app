@@ -10,6 +10,7 @@ env:
   AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY_DEV }}"
   IMAGE_TAG: "${{ secrets.ECR_REGISTRY }}/nestjs-app"
   IMAGE_LABEL: "${{ github.sha }}"
+  ECR_REPOSITORY: "nestjs-app"
 
 jobs:
   login_to_ecr:
@@ -52,6 +53,9 @@ jobs:
 
       - name: Build and push Docker images
         run: |
+          echo $ECR_REGISTRY
+          echo $ECR_REPOSITORY
+          echo $IMAGE_TAG
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker images
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
