@@ -77,24 +77,35 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Download task definition
+      - name: Get Task Definition ARN without Version
+        id: get-task-def-arn
         run: |
-          aws ecs describe-task-definition --task-definition ${SERVICE} --query taskDefinition > task-definition.json
-          cat task-definition.json
+          FAMILY_PREFIX="nestjs-task"
+          TASK_DEFINITION_ARN=$(aws ecs list-task-definitions --family-prefix $FAMILY_PREFIX --query 'taskDefinitionArns[-1]' --output text)
+          TASK_DEFINITION_ARN_NO_VERSION=$(echo $TASK_DEFINITION_ARN | sed 's/:[0-9]*$//')
+          echo "TASK_DEFINITION_ARN_NO_VERSION=$TASK_DEFINITION_ARN_NO_VERSION" >> $GITHUB_ENV
+  
+      - name: Print Task Definition ARN
+        run: |
+          echo "Task Definition ARN without version: ${{ env.TASK_DEFINITION_ARN_NO_VERSION }}"
+
+      - name: Describe Task Definition
+        run: |
+          aws ecs describe-task-definition --task-definition ${{ env.TASK_DEFINITION_ARN_NO_VERSION }} --query 'taskDefinition' > task-definition.json
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-         task-definition: task-definition.json
-         container-name: nestjs-app
-         image: $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          task-definition: task-definition.json
+          container-name: nestjs-app
+          image: $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
-          service: nestjs-service
-          cluster: nestjs-cluster
+          service: stepathlon-dev-backend
+          cluster: stepathlon-dev
           wait-for-service-stability: true
 
