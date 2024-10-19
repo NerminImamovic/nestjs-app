@@ -105,7 +105,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: task-definition.json
-          service: stepathlon-dev-backend
-          cluster: stepathlon-dev
+          service: nestjs-service
+          cluster: nestjs-cluster
           wait-for-service-stability: true
-
