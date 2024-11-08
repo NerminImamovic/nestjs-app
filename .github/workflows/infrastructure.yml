@@ -12,7 +12,7 @@ permissions:
   actions: write
 
 jobs:
-  TerraformShow:
+  TerraformPlan:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,14 +38,14 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan -no-color
 
-  ApplyTerraform:
-    needs: TerraformShow
+  TerraformApply:
+    needs: TerraformPlan
     defaults:
         run:
           working-directory: ./terraform
     runs-on: ubuntu-latest
     environment:
-      name: approvers
+      name: production
     steps:
       - name: Checkout
         uses: actions/checkout@v3

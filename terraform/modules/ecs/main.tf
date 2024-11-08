@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "my_task" {
   container_definitions = jsonencode([
     {
       name      = "nestjs-app"
-      image     = "275221252783.dkr.ecr.us-east-1.amazonaws.com/nestjs-app:latest"
+      image     = var.image
       essential = true
       portMappings = [
         {

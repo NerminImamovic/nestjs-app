@@ -2,7 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-
 # module "ecr_backend" {
 #   source = "./modules/ecr"
 
@@ -30,4 +29,5 @@ module "ecs" {
   subnets = module.vpc.subnet_ids
   security_group_id = module.vpc.ecs_sg_id
   lb_target_group_arn = module.load_balancer.target_group_arn
+  image = "275221252783.dkr.ecr.us-east-1.amazonaws.com/nestjs-app:latest"
 }

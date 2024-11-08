@@ -5,3 +5,7 @@ variable "subnets" {
 }
 variable "security_group_id" {}
 variable "lb_target_group_arn" {}
+
+variable "image" {
+  type = string
+}
