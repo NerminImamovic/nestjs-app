@@ -4,8 +4,8 @@ name: Terraform Plan and Apply with Approval
 
 on:
   push:
-    # paths:
-    #   - 'terraform/**'
+    paths:
+      - 'terraform/**'
 
 permissions:
   contents: write
