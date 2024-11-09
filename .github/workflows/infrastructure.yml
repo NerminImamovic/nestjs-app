@@ -12,7 +12,7 @@ permissions:
   actions: write
 
 jobs:
-  TerraformPlan:
+  terraform_plan:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -44,8 +44,8 @@ jobs:
           name: tfplan
           path: ./terraform/tfplan
 
-  TerraformApply:
-    needs: TerraformPlan
+  terraform_apply:
+    needs: terraform_plan
     defaults:
         run:
           working-directory: ./terraform
